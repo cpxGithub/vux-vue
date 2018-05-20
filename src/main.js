@@ -9,6 +9,9 @@ import common from './util/common'
 import './util/rem'
 import { AlertPlugin, ToastPlugin, AjaxPlugin } from 'vux'
 import './assets/styles/common.css'
+if (process.env.NODE_ENV === 'development') {
+  require('./mock/index')
+}
 require('es6-promise').polyfill()
 
 Vue.use(VueRouter)

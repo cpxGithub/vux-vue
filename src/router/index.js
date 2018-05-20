@@ -38,6 +38,6 @@ export default[
   {
     path: '*',
     meta: { title: '404' },
-    component: () => import('views/mall/index')
+    component: () => import('views/error')
   }
 ]

@@ -1,4 +1,3 @@
-import Vue from 'vue' 
 import axios from 'axios'
 export default (type = 'get', url, params) => {
   return new Promise((resolve, reject) => {
@@ -16,16 +15,15 @@ export default (type = 'get', url, params) => {
       config.data = params
     }
     axios.interceptors.response.use((response) => {
-      console.log(10, response)
+      // console.log(10, response)
       switch (response.data.code) {
         case 0:
           break
         case 10:
+          window.ra.push('second1')
           break
         default:
-          Vue.$vux.toast.show({
-            text: 'Loading'
-          })
+          console.log('cuowu')
           break
       }
       return response
