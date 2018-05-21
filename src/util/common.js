@@ -4,7 +4,7 @@ let setTitle = title => {
   if (/iphone|ipad|ipod/.test(mobile)) {
     let iframe = document.createElement('iframe')
     iframe.style.visibility = 'hidden'
-    iframe.setAttribute('src', '/static/assets/img/close.png')
+    iframe.setAttribute('src', '/static/img/close.png')
     let iframeCallback = () => {
       setTimeout(() => {
         iframe.removeEventListener('load', iframeCallback)

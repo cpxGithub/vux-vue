@@ -15,7 +15,6 @@ import { Tabbar, TabbarItem } from 'vux'
 export default {
   data () {
     return {
-      active: 2,
       lists: [
         {name: '首页', class: 'icon icon-home', routeName: 'mallIndex'},
         {name: '发现', class: 'icon icon-find', routeName: 'findIndex'},

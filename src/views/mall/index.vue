@@ -19,36 +19,36 @@
       <div class="shop-list">
         <divider class="top-title">商家推荐</divider>
         <div class="list">
-          <div class="shop-info">
+          <div class="shop-info" v-for="item in shopLists" :key="item.id">
             <div class="shop-info-left">
-              <img class="shop-logo" src="http://t2.hddhhn.com/uploads/tu/201805/9999/a80e3b26d8.jpg" alt="">
+              <img class="shop-logo" :src="item.logoUrl" alt="">
             </div>
             <div class="shop-info-right">
-              <div class="shop-name">啊</div>
-              <div class="sale-num">
-                <rater :value="3" active-color="#ffc700" :font-size="14"></rater>
-                <span>4.6</span>
-                <span>月售22单</span>
+              <div class="shop-name">{{item.name}}</div>
+              <div class="sale-num margin-top5">
+                <rater :value="item.rating" active-color="#ffc700" :font-size="14"></rater>
+                <span>{{item.rating}}</span>
+                <span>月售{{item.orderNum}}单</span>
               </div>
-              <div class="shop-dis">
+              <div class="shop-dis margin-top5">
                 <div>
-                  <span class="left">¥30起送</span>
-                  <span>¥30起送</span>
+                  <span class="left">¥{{item.minimumAmount | priceFilter}}起送</span>
+                  <span>配送费¥{{item.deliveryFee | priceFilter}}</span>
                 </div>
-                <div>
-                  <span class="left">¥30起送</span>
-                  <span>¥30起送</span>
+                <div class="color999">
+                  <span class="left">{{item.distance | disFilter}}</span>
+                  <span>{{item.orderTime}}分钟</span>
                 </div>
               </div>
-              <div class="discout-info">
-                <div class="shop-dis">
-                  <span><span class="first-dis">首</span>新用户</span>
-                  <span>7个活动</span>
+              <div class="discout-info margin-top5">
+                <div class="shop-dis" v-for="(child, index) in item.activities" :key="index">
+                  <span v-if="index < 2 || item.showAll"><span :class="[index ? 'other-bg' : 'first-bg', 'first-dis']">{{index ? '减' : '首'}}</span>{{child.description}}</span>
+                  <span v-if="index === 0" class="color999" @click="showActive(item)">{{item.activities.length}}个活动<i class="arrow-dow"></i></span>
                 </div>
-                <div>25</div>
               </div>
             </div>
           </div>
+          <load-more :tip="loadFlag ? '正在加载' : '已经到底了'" :show-loading="loadFlag" style="margin-bottom: 0;"></load-more>
         </div>
       </div>
     </div>
@@ -57,14 +57,14 @@
 </template>
 <script>
 import footerMenu from 'components/common/footerMenu'
-import { Swiper, Divider, Rater } from 'vux'
-import common from '@/util/common'
-import axios from 'axios'
-import { fetchOrderList } from 'api/mall/index'
+import { Swiper, Divider, Rater, LoadMore } from 'vux'
+import { handleScroll } from '@/mixins'
+import { fetchShopList } from 'api/mall/index'
 export default {
+  mixins: [handleScroll],
   data () {
     return {
-      kindLists: [
+      kindLists: [ // 种类
         {
           imgUrl: 'http://fuss10.elemecdn.com/7/d8/a867c870b22bc74c87c348b75528djpeg.jpeg?imageMogr/format/webp/thumbnail/!90x90r/gravity/Center/crop/90x90/',
           title: '美食'
@@ -106,57 +106,62 @@ export default {
           title: '披萨意面'
         }
       ],
-      page: {}, // 分页数据
-      int: 1, // 页数
-      isRequest: false,
-      list: [{
+      loadFlag: false,
+      list: [{ // 轮播图
         url: 'javascript:',
         img: '//fuss10.elemecdn.com/0/e7/64044fb6df771e9cb42196ae3eeeejpeg.jpeg?imageMogr/format/webp/'
       }, {
         url: 'javascript:',
         img: 'http://fuss10.elemecdn.com/5/78/ea6efe857599f67bcec5d671f56b2jpeg.jpeg?imageMogr/format/webp/'
-      }]
+      }],
+      shopLists: [] // 商家列表
     }
   },
   components: {
     footerMenu,
     Swiper,
     Divider,
-    Rater
+    Rater,
+    LoadMore
   },
   created () {
     window.addEventListener('scroll', this.handleScroll)
-    fetchOrderList({name: 66}).then(res => {
-      console.log(111, res)
-    })
-    axios.get('/api/order-list').then(res => {
-      console.log(88888888888888, res)
-    })
+    this.getData()
   },
   methods: {
-    handleScroll () {
-      if (window.scrollY === 0) return
-      let [scrollY, innerHeight, scrollHeight] = [window.scrollY, window.innerHeight, window.document.body.scrollHeight]
-      let height = common.add(scrollY, innerHeight)
-      if ((parseInt(height) === parseInt(scrollHeight)) && this.isRequest) {
-        this.int++
-        this.isRequest = false
-        if (this.int > this.page.pageCount) {
-          this.$vux.toast.show({
-            type: 'text',
-            text: '没有更多了',
-            time: 500
-          })
-        } else {
-          this.getData()
-        }
-      }
+    showActive (obj) { // 显示所有活动
+      this.$set(obj, 'showAll', !obj.showAll)
+    },
+    getData () { // 获取数据
+      this.loadFlag = true
+      fetchShopList({page: this.currPage, pageSize: 15}).then(res => {
+        this.loadFlag = false
+        this.isRequest = true
+        this.page = res.page
+        this.shopLists.push(...res.data)
+      })
     }
   }
 }
 </script>
 <style lang="less" scoped>
 .mall-content {
+  padding-bottom: 1.1rem;
+  .color999 {
+    color: #999;
+  }
+  .margin-top5 {
+    margin-top: 5px;
+  }
+  .arrow-dow {
+    position: relative;
+    top: -2px;
+    left: 3px;
+    display: inline-block;
+    width: 0.3rem;
+    height: 0.24rem;
+    background: url('../../assets/img/arrow-down.png') no-repeat top/cover;
+  }
   .address {
     display: flex;
     align-items: center;
@@ -207,6 +212,7 @@ export default {
     padding: 0 0.26rem;
     .shop-info {
       display: flex;
+      padding: 5px 0;
       .shop-logo {
         display: block;
         width: 1.1rem;
@@ -226,6 +232,7 @@ export default {
         .shop-dis {
           display: flex;
           justify-content: space-between;
+          align-items: baseline;
         }
         .left::after {
           display: inline-block;
@@ -233,18 +240,23 @@ export default {
           line-height: 0.18rem;
           margin: 0 3px 0 5px;
           content: "";
-          border-left: 1px solid #666;
+          border-left: 1px solid #ddd;
         }
         .first-dis {
           display: inline-block;
           width: 15px;
           height: 15px;
-          background: rgb(112, 188, 70);
           border-radius: 3px;
           text-align: center;
           line-height: 15px;
           color: #fff;
           margin-right: 5px;
+        }
+        .first-bg {
+          background: rgb(112, 188, 70);
+        }
+        .other-bg {
+          background: rgb(240, 115, 115);
         }
       }
     }

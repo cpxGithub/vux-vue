@@ -1,7 +1,7 @@
 import axios from '@/util/axios'
 
-const fetchOrderList = (params) => axios('get', '/order-list', params)
+const fetchShopList = (params) => axios('get', '/shopping/restaurants', params)
 
 export {
-  fetchOrderList
+  fetchShopList
 }

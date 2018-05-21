@@ -36,7 +36,14 @@ export default[
     component: () => import('views/user/index')
   },
   {
+    path: '/user/modify',
+    name: 'userModify',
+    meta: { title: '个人信息修改' },
+    component: () => import('views/user/modify')
+  },
+  {
     path: '*',
+    alias: '/404',
     meta: { title: '404' },
     component: () => import('views/error')
   }

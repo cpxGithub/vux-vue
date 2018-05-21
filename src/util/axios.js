@@ -34,7 +34,6 @@ export default (type = 'get', url, params) => {
       // if (res.data) reject(res.data)
       // else resolve(res.data)
       resolve(res.data)
-      console.log(1235, res)
     }).catch(data => {
       console.log(963, data)
     })
