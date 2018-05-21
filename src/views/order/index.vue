@@ -91,7 +91,7 @@ export default {
   .order-item {
     display: flex;
     justify-content: space-between;
-    padding-bottom: 0.3rem;
+    padding-bottom: 0.18rem;
     color: #333;
     .shop-name {
       font-size: 0.32rem;

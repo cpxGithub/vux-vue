@@ -6,7 +6,7 @@
         <span class="info">软件产业基地</span>
       </div>
       <div>
-        <swiper :list="list" dots-position="center" auto dots-class="swiper-dot" height="2rem"></swiper>
+        <swiper :list="list" dots-position="center" auto loop height="2rem"></swiper>
       </div>
       <div class="kind-box">
         <router-link to="/" v-for="(item, idx) in kindLists" :key="idx" class="kind-item">
@@ -48,6 +48,7 @@
               </div>
             </div>
           </div>
+          {{loadFlag}}666
           <load-more :tip="loadFlag ? '正在加载' : '已经到底了'" :show-loading="loadFlag" style="margin-bottom: 0;"></load-more>
         </div>
       </div>
@@ -155,11 +156,10 @@ export default {
   }
   .arrow-dow {
     position: relative;
-    top: -2px;
     left: 3px;
     display: inline-block;
-    width: 0.3rem;
-    height: 0.24rem;
+    width: 0.2rem;
+    height: 0.2rem;
     background: url('../../assets/img/arrow-down.png') no-repeat top/cover;
   }
   .address {
@@ -251,6 +251,7 @@ export default {
           line-height: 15px;
           color: #fff;
           margin-right: 5px;
+          margin-bottom: 5px;
         }
         .first-bg {
           background: rgb(112, 188, 70);
