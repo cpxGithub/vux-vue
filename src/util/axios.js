@@ -15,7 +15,6 @@ export default (type = 'get', url, params) => {
       config.data = params
     }
     axios.interceptors.response.use((response) => {
-      // console.log(10, response)
       switch (response.data.code) {
         case 0:
           break
@@ -35,7 +34,7 @@ export default (type = 'get', url, params) => {
       // else resolve(res.data)
       resolve(res.data)
     }).catch(data => {
-      console.log(963, data)
+      console.log('catch error', data)
     })
   })
 }

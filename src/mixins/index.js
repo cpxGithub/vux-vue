@@ -17,11 +17,11 @@ let handleScroll = {
     window.removeEventListener('scroll', this.handleScroll)
   },
   methods: {
-    handleScroll () { // 监听滚动函数处理
+    handleScroll (e) { // 监听滚动函数处理
       if (window.pageYOffset === 0) return
       let [scrollY, innerHeight, scrollHeight] = [window.pageYOffset, window.innerHeight, window.document.body.scrollHeight]
       let height = common.add(scrollY, innerHeight)
-      if ((parseInt(height) === parseInt(scrollHeight)) && this.isRequest) {
+      if ((parseInt(height) >= parseInt(scrollHeight - 200)) && this.isRequest) {
         this.currPage++
         this.isRequest = false
         if (this.currPage <= this.page.pageCount) this.getData()

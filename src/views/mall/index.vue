@@ -48,7 +48,6 @@
               </div>
             </div>
           </div>
-          {{loadFlag}}666
           <load-more :tip="loadFlag ? '正在加载' : '已经到底了'" :show-loading="loadFlag" style="margin-bottom: 0;"></load-more>
         </div>
       </div>
@@ -115,7 +114,7 @@ export default {
         url: 'javascript:',
         img: 'http://fuss10.elemecdn.com/5/78/ea6efe857599f67bcec5d671f56b2jpeg.jpeg?imageMogr/format/webp/'
       }],
-      shopLists: [] // 商家列表
+      shopLists: [] // 商家列表1111
     }
   },
   components: {

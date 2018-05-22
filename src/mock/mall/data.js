@@ -6,8 +6,8 @@ let dataList = {
   'rating': '@integer(1, 5)',
   'orderNum': '@natural(0, 3000)',
   'orderTime': '@natural(10, 50)',
-  'deliveryFee': '@integer(0, 10)',
-  'minimumAmount': '@natural(0, 30)',
+  'deliveryFee': '@integer(0, 1000)',
+  'minimumAmount': '@natural(0, 3000)',
   'activities|2-30': [{
     'description': '新用户下单立减@natural(0, 30)元',
     'activityId': '@id()'
